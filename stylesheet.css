@@ -1,0 +1,55 @@
+body {
+    font-family: Arial;
+    margin: 0;
+    background: linear-gradient(to right, #667eea, #764ba2);
+    color: white;
+}
+
+/* Navbar */
+nav {
+    background: #333;
+    padding: 10px;
+    text-align: center;
+}
+
+nav a {
+    color: white;
+    margin: 0 15px;
+    cursor: pointer;
+}
+
+/* Sections */
+.section {
+    display: none;
+    text-align: center;
+    padding: 40px;
+}
+
+.active {
+    display: block;
+}
+
+/* Home Button */
+button {
+    padding: 10px 20px;
+    border: none;
+    background: #667eea;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Quiz Card */
+.container {
+    background: white;
+    color: black;
+    width: 400px;
+    margin: auto;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 40px;
+}

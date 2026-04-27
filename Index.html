@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            margin: 0;
+        }
+
+        .container {
+            width: 400px;
+            margin: 60px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+        }
+
+        .tabs button {
+            padding: 8px;
+            border: none;
+            cursor: pointer;
+            background: #ddd;
+            border-radius: 5px;
+        }
+
+        .tabs button.active {
+            background: #4facfe;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .active-tab {
+            display: block;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 10px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 8px;
+            width: 100%;
+            background: #4facfe;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background: #f1f1f1;
+            margin: 5px 0;
+            padding: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>🎓 Student Dashboard</h1>
+
+    <!-- Tabs -->
+    <div class="tabs">
+        <button onclick="openTab('tasks')" class="active">Tasks</button>
+        <button onclick="openTab('notes')">Notes</button>
+        <button onclick="openTab('about')">About</button>
+    </div>
+
+    <!-- Task Tab -->
+    <div id="tasks" class="tab-content active-tab">
+        <input type="text" id="taskInput" placeholder="Enter task...">
+        <button onclick="addTask()">Add Task</button>
+        <ul id="taskList"></ul>
+    </div>
+
+    <!-- Notes Tab -->
+    <div id="notes" class="tab-content">
+        <textarea id="noteInput" placeholder="Write your notes..."></textarea>
+        <button onclick="saveNote()">Save Note</button>
+        <p id="savedNote"></p>
+    </div>
+
+    <!-- About Tab -->
+    <div id="about" class="tab-content">
+        <p>This is a simple student dashboard project.</p>
+        <p>You can manage tasks and save notes easily.</p>
+    </div>
+</div>
+
+<footer>
+    <p>Shashank Boro | Course: BCA (IBM) | Section A</p>
+</footer>
+
+<script>
+    // Tab switching
+    function openTab(tabName) {
+        let tabs = document.querySelectorAll(".tab-content");
+        let buttons = document.querySelectorAll(".tabs button");
+
+        tabs.forEach(tab => tab.classList.remove("active-tab"));
+        buttons.forEach(btn => btn.classList.remove("active"));
+
+        document.getElementById(tabName).classList.add("active-tab");
+        event.target.classList.add("active");
+    }
+
+    // Tasks
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+    function saveTasks() {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    function displayTasks() {
+        let list = document.getElementById("taskList");
+        list.innerHTML = "";
+
+        tasks.forEach((task, index) => {
+            let li = document.createElement("li");
+
+            li.innerHTML = `
+                <span onclick="toggleTask(${index})" class="${task.completed ? 'completed' : ''}">
+                    ${task.name}
+                </span>
+                <button onclick="deleteTask(${index})">❌</button>
+            `;
+
+            list.appendChild(li);
+        });
+    }
+
+    function addTask() {
+        let input = document.getElementById("taskInput");
+        if (input.value.trim() === "") return;
+
+        tasks.push({ name: input.value, completed: false });
+        input.value = "";
+
+        saveTasks();
+        displayTasks();
+    }
+
+    function toggleTask(i) {
+        tasks[i].completed = !tasks[i].completed;
+        saveTasks();
+        displayTasks();
+    }
+
+    function deleteTask(i) {
+        tasks.splice(i, 1);
+        saveTasks();
+        displayTasks();
+    }
+
+    // Notes
+    function saveNote() {
+        let note = document.getElementById("noteInput").value;
+        localStorage.setItem("note", note);
+        document.getElementById("savedNote").innerText = note;
+    }
+
+    function loadNote() {
+        let note = localStorage.getItem("note");
+        if (note) {
+            document.getElementById("savedNote").innerText = note;
+        }
+    }
+
+    displayTasks();
+    loadNote();
+</script>
+
+</body>
+</html>
